@@ -196,6 +196,15 @@ namespace Flight_Management_System
             Console.WriteLine(" schedules a new flight ");
             Console.WriteLine("-----************-------");
 
+            //Generate ID
+            int flightid = Context.Flights.Count + 1;
+
+            // Generate code
+            int flightcode = Context.Flights.Count + 1;
+            string code = "OA- " + flightcode;
+          
+
+            //-----------------------------------------------
             // view all aircraft
             foreach (Aircraft aircraft in Context.Aircrafts)
             {
@@ -205,6 +214,7 @@ namespace Flight_Management_System
                     $"\n is Operational:{aircraft.isOperational}  ");
 
             }
+
             //select one
             Console.WriteLine("choose Aircraft ID: ");
             int Aircraftid = int.Parse(Console.ReadLine());
@@ -219,7 +229,8 @@ namespace Flight_Management_System
                 return;
             }
 
-            //View and assign a pilot
+            //------------------------------------------------------
+            //View assign a pilot
             foreach(Pilot p in Context.Pilots)
             {
                 Console.WriteLine("#### Available Pilot ####");
@@ -227,8 +238,68 @@ namespace Flight_Management_System
                     $"\n pilot Name: {p.pilotName}" +
                     $"\n is Available: {p.isAvailable}");
             }
-         
 
+            // select one 
+            Console.WriteLine("Enter Selected Pilot ID :");
+            int pilotid = int.Parse(Console.ReadLine());
+
+            //check input
+            Pilot selectedpilotId = Context.Pilots.FirstOrDefault(item => item.pilotId == pilotid && item.isAvailable == true);
+            
+            //check id not null
+            if(selectedpilotId == null)
+            {
+                Console.WriteLine("Not pilot match with seleceted ID");
+                return;
+            }
+
+            // user input
+            Console.WriteLine("Enter flight origin: ");
+            string flightOrigin = Console.ReadLine();
+
+            Console.WriteLine("Enter flight destination: ");
+            string flightdestination = Console.ReadLine();
+
+            Console.WriteLine("Enter departure Date: ");
+            string departuredate = Console.ReadLine();
+
+            Console.WriteLine("Enter departure Time: ");
+            string departuretime = Console.ReadLine();
+
+            Console.WriteLine("Enter ticket Price: ");
+            decimal ticketprice = decimal.Parse(Console.ReadLine());
+
+            Console.WriteLine("Enter flight Duration: ");
+            decimal duration = decimal.Parse(Console.ReadLine());
+
+
+
+
+            //assign a pilot
+            Context.Flights.Add(new Flight
+            {
+                flightId= flightid,
+                flightCode =code,
+               aircraftId= selectedAircraftid.aircraftId,
+                pilotId = selectedpilotId.pilotId,
+                origin = flightOrigin,
+                destination= flightdestination,
+                departureDate= departuredate,
+                departureTime=departuretime,
+                ticketPrice=ticketprice,
+                flightDuration=duration,
+                availableSeats = selectedAircraftid.totalSeats,
+                status = "Scheduled "
+
+
+            });
+
+            Console.WriteLine($"Flight scheduled successfully .. With ID : {flightid}");
+            selectedpilotId.isAvailable = false;
+            ViewAllFlights();
+
+           
+          
         }
 
 
@@ -293,8 +364,10 @@ namespace Flight_Management_System
                     ViewAllFlights();
                     break;
                 case 5:
+                    SchedulenewFlight();
                     break;
                 case 6:
+
                     break;
                 case 7:
                     break;
