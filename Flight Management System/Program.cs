@@ -1,4 +1,7 @@
 ﻿using Flight_Management_System.Models;
+using System.Net.WebSockets;
+using System.Timers;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Flight_Management_System
 {
@@ -49,7 +52,7 @@ namespace Flight_Management_System
         }
 
         //-----------------------------
-        // case 2 > Add  Aircraft
+        // case 2 >> Add  Aircraft
         //-----------------------------
         public static void AddAircraft()
         {
@@ -66,14 +69,14 @@ namespace Flight_Management_System
                 aircraftId=Aircraftid,
                 model=AircraftModel,
                 totalSeats=TotalSeat,
-                isOperational=false
+                isOperational=true
             });
 
             Console.WriteLine($"Aircraft Added sucessfuly with ID :{Aircraftid}");
         }
 
         //-----------------------------
-        // case 3 >Register a Pilot
+        // case 3 >> Register a Pilot
         //-----------------------------
         public static void RegisterPilot()
         {
@@ -105,9 +108,128 @@ namespace Flight_Management_System
             Console.WriteLine($"Pilot has been added with ID: {pilotid}");
         }
 
+        //-----------------------------
+        // case 4 >> View All Flights
+        //-----------------------------
+        public static void ViewAllFlights()
+        {
+            int flightcode = Context.Flights.Count + 1;
+            string code = "OA- " + flightcode;
+
+            Console.WriteLine("Enter flight origin: ");
+            string flightOrigin = Console.ReadLine();
+
+            Console.WriteLine("Enter flight destination: ");
+            string flightdestination = Console.ReadLine();
+
+            Console.WriteLine("Enter departure Date: ");
+            string departuredate = Console.ReadLine();
+
+            Console.WriteLine("Enter departure Time: ");
+            string departuretime = Console.ReadLine();
+
+            Console.WriteLine("Enter ticket Price: ");
+            decimal ticketprice = decimal.Parse(Console.ReadLine());
+
+            Console.WriteLine("Enter available Seats: ");
+            int availableSeat = int.Parse(Console.ReadLine());
 
 
+            Console.WriteLine("Enter flight Duration: ");
+            decimal duration = decimal.Parse(Console.ReadLine());
 
+            int flightid = Context.Flights.Count + 1;
+
+            Console.WriteLine("Enter aircraft Id");
+            int aircraftid = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Enter pilot Id");
+            int pilotid = int.Parse(Console.ReadLine());
+
+            //Aircraft aircrafttid = Context.Aircrafts.FirstOrDefault(item => item.aircraftId == aircraftid);
+            //Pilot pilottid = Context.Pilots.FirstOrDefault(item => item.pilotId == pilotid);
+
+
+            Context.Flights.Add(new Flight
+            {
+                flightId = flightid,
+                flightCode= code,
+                origin = flightOrigin,
+                //aircraftId=aircrafttid.aircraftId,
+                //pilotId = pilottid.pilotId,
+                destination = flightdestination,
+                departureDate = departuredate,
+                departureTime = departuretime,
+                ticketPrice = ticketprice,
+                availableSeats = availableSeat,
+                flightDuration = duration,
+                status = "Scheduled"
+            });
+
+            foreach (Flight flight in Context.Flights)
+            {
+
+
+                Console.WriteLine("_____**************______ ");
+                Console.WriteLine("      Flight Details       ");
+                Console.WriteLine("_____**************______ ");
+
+                Console.WriteLine($"\n Flight Code : {flight.flightCode} " +
+                    $"\n Flight Origin : {flight.origin}" +
+                    $"\n Destination : {flight.destination}" +
+                    $"\n Departure Date : {flight.departureDate}" +
+                    $"\n Departure Time : {flight.departureTime}" +
+                    $"\n Available Seats : {flight.availableSeats}" +
+                    $"\n Ticket Price : {flight.ticketPrice}" +
+                    $"\n status : {flight.status}");
+
+            }
+        }
+
+
+        //-----------------------------
+        // case 5 >> Schedule a Flight
+        //-----------------------------
+        public static void SchedulenewFlight()
+        {
+            Console.WriteLine("-----************-------");
+            Console.WriteLine(" schedules a new flight ");
+            Console.WriteLine("-----************-------");
+
+            // view all aircraft
+            foreach (Aircraft aircraft in Context.Aircrafts)
+            {
+                Console.WriteLine("#### Available Aircraft ####");
+                Console.WriteLine($"\n aircraft Id : {aircraft.aircraftId}" +
+                    $"\n total Seats: {aircraft.totalSeats}" +
+                    $"\n is Operational:{aircraft.isOperational}  ");
+
+            }
+            //select one
+            Console.WriteLine("choose Aircraft ID: ");
+            int Aircraftid = int.Parse(Console.ReadLine());
+
+            //check user input
+            Aircraft selectedAircraftid = Context.Aircrafts.FirstOrDefault(item => item.aircraftId == Aircraftid && item.isOperational==true);
+
+            //check not null
+            if(selectedAircraftid == null)
+            {
+                Console.WriteLine(" This Aircraft Not Available ");
+                return;
+            }
+
+            //View and assign a pilot
+            foreach(Pilot p in Context.Pilots)
+            {
+                Console.WriteLine("#### Available Pilot ####");
+                Console.WriteLine($"\n pilot Id :{p.pilotId}" +
+                    $"\n pilot Name: {p.pilotName}" +
+                    $"\n is Available: {p.isAvailable}");
+            }
+         
+
+        }
 
 
 
@@ -168,6 +290,7 @@ namespace Flight_Management_System
                     RegisterPilot();
                     break;
                 case 4:
+                    ViewAllFlights();
                     break;
                 case 5:
                     break;
