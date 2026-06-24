@@ -14,7 +14,7 @@ namespace Flight_Management_System
             Pilots=new List<Models.Pilot>(),
         };
         //-----------------------------
-        // case 1 >> Register Passenger
+        // case 1 > Register Passenger
         //-----------------------------
         public static void RegisterPassenger()
         {
@@ -49,7 +49,7 @@ namespace Flight_Management_System
         }
 
         //-----------------------------
-        // case 2 >> Add  Aircraft
+        // case 2 > Add  Aircraft
         //-----------------------------
         public static void AddAircraft()
         {
