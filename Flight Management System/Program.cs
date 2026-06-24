@@ -75,7 +75,35 @@ namespace Flight_Management_System
         //-----------------------------
         // case 3 >Register a Pilot
         //-----------------------------
+        public static void RegisterPilot()
+        {
 
+            Console.WriteLine("Enter pilot Name: ");
+            string pilotaame = Console.ReadLine();
+
+            Console.WriteLine("Enter pilot Phone: ");
+            string pilotphone = Console.ReadLine();
+
+            Console.WriteLine("Enter license Number: ");
+            string licensenumber = Console.ReadLine();
+
+            Console.WriteLine("Enter flight Hours: ");
+            int flightHour =int.Parse( Console.ReadLine());
+
+            int pilotid = Context.Pilots.Count + 1;
+
+            Context.Pilots.Add(new Pilot
+            {
+                pilotId=pilotid,
+                pilotName=pilotaame,
+                pilotPhone=pilotphone,
+                licenseNumber=licensenumber,
+                flightHours= flightHour,
+                isAvailable=false
+
+            });
+            Console.WriteLine($"Pilot has been added with ID: {pilotid}");
+        }
 
 
 
@@ -137,6 +165,7 @@ namespace Flight_Management_System
                     AddAircraft();
                     break;
                 case 3:
+                    RegisterPilot();
                     break;
                 case 4:
                     break;
