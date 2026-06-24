@@ -53,8 +53,47 @@ namespace Flight_Management_System
         //-----------------------------
         public static void AddAircraft()
         {
+            Console.WriteLine("Enter Aircraft model:");
+            string AircraftModel = Console.ReadLine();
 
+            Console.WriteLine("Enter total Seats:");
+            int TotalSeat =int.Parse( Console.ReadLine());
+
+            int Aircraftid = Context.Aircrafts.Count + 1;
+
+            Context.Aircrafts.Add(new Aircraft
+            {
+                aircraftId=Aircraftid,
+                model=AircraftModel,
+                totalSeats=TotalSeat,
+                isOperational=false
+            });
+
+            Console.WriteLine($"Aircraft Added sucessfuly with ID :{Aircraftid}");
         }
+
+        //-----------------------------
+        // case 3 >Register a Pilot
+        //-----------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -95,6 +134,7 @@ namespace Flight_Management_System
                     RegisterPassenger();
                     break;
                 case 2:
+                    AddAircraft();
                     break;
                 case 3:
                     break;

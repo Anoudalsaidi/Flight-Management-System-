@@ -18,6 +18,7 @@ namespace Flight_Management_System.Models
         public string departureTime { get; set; } 
         public decimal ticketPrice { get; set; }
         public int availableSeats { get; set; }
+        public decimal flightDuration { get; set; }
         public string status { get; set; }
 
     }
