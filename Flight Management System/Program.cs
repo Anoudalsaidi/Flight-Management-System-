@@ -329,23 +329,74 @@ namespace Flight_Management_System
             }
 
             // view DESTINATION
-            foreach(Flight flight in Context.Flights)
-            {
-                ViewAllFlights();
-            }
+             ViewAllFlights();
+            
 
             //select destination
             Console.WriteLine("Enter YOUR Destination ");
             string destination = Console.ReadLine();
 
             //check input
-            Flight selectdestination = Context.Flights.FirstOrDefault(f => f.destination == destination && f.status == "Scheduled ");
+            List<Flight> selectdestination = Context.Flights.Where(f => f.destination == destination && f.status == "Scheduled" && f.availableSeats >0).ToList();
 
-            if(selectdestination == null)
+            if(selectdestination.Count == 0)
             {
                 Console.WriteLine("Your Destination not available");
+                return;
             }
 
+            //view flight id
+            foreach (Flight flight in selectdestination)
+            {
+                Console.WriteLine(
+                    $"Flight ID: {flight.flightId}" +
+                    $"\nFlight Code: {flight.flightCode}" +
+                    $"\nDestination: {flight.destination}" +
+                    $"\nAvailable Seats: {flight.availableSeats}" +
+                    $"\nPrice: {flight.ticketPrice}");
+            }
+
+            //select flight id 
+            Console.WriteLine("Select Flight ID :");
+            int flightid = int.Parse(Console.ReadLine());
+
+            //check id and avaiable seats
+            Flight selectflightid = Context.Flights.FirstOrDefault(f => f.flightId == flightid && f.availableSeats > 0);
+
+            //check null
+            if(selectflightid == null)
+            {
+                Console.WriteLine("No Flight");
+                return;
+            }
+
+
+            //generate booking id
+            int bookingid = Context.Bookings.Count + 1;
+
+            //geneate seat number
+            int seatnum = Context.Bookings.Count + 10;
+            string seatnumber = "A-" + seatnum;
+
+            //user input (flight date)
+            Console.WriteLine("Enter Booking Date :");
+            string bookdate = Console.ReadLine();
+
+            //pick flight
+            Context.Bookings.Add(new Booking
+            {
+                bookingId=bookingid,
+                passengerId=passengerid,
+                flightId=flightid,
+                seatNumber=seatnumber,
+                bookingDate=bookdate,
+                totalPrice= selectflightid.ticketPrice,
+                status= "Confirmed"
+
+            });
+            selectflightid.availableSeats --;
+
+            Console.WriteLine($"Booking Added successfully with ID:{bookingid}");
         }
 
 
