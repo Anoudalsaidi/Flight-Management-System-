@@ -400,6 +400,33 @@ namespace Flight_Management_System
         }
 
 
+        //-----------------------------
+        // case 7 >> Cancel a Booking
+        //-----------------------------
+        public static void CancelBooking()
+        {
+            Console.WriteLine("Enter Booking ID you to cancel ");
+            int bookingid = int.Parse(Console.ReadLine());
+
+            //check id
+            Booking cancelbooking = Context.Bookings.FirstOrDefault(item => item.bookingId == bookingid);
+
+            //check null
+            if(cancelbooking == null)
+            {
+                Console.WriteLine("No Booking available");
+                return;
+            }
+
+            Flight returnflight = Context.Flights.FirstOrDefault(item => item.flightId == cancelbooking.flightId);
+            returnflight.availableSeats++;
+
+            cancelbooking.status= "Cancelled";
+
+            Console.WriteLine($"Booking ID: {cancelbooking.bookingId} has been cancelled successfully");
+
+
+        }
 
 
 
@@ -465,6 +492,7 @@ namespace Flight_Management_System
                     BookFlight();
                     break;
                 case 7:
+                    CancelBooking();
                     break;
                 case 8:
                     break;
