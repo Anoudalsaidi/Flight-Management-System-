@@ -429,7 +429,54 @@ namespace Flight_Management_System
         }
 
 
+        //-----------------------------
+        // case 8 >> Depart a Flight
+        //-----------------------------
+        public static void DepartFlight()
+        {
+            Console.WriteLine("Enter flight ID :");
+            int flightid = int.Parse(Console.ReadLine());
 
+            //check flight id
+            Flight selectedflightid = Context.Flights.FirstOrDefault(item => item.flightId == flightid);
+            
+            //check null
+            if(selectedflightid == null)
+            {
+                Console.WriteLine("No flight avialable");
+                return;
+            }
+            
+            //check & change satus
+            if(selectedflightid.status == "Scheduled")
+            {
+                selectedflightid.status = "Departed";
+                Console.WriteLine($"Flight ID :{selectedflightid.aircraftId} , status has been change to {selectedflightid.status}");
+            }
+
+            //check if flight status (Departed ) not allowed to cancel
+            if(selectedflightid.status == "Departed")
+            {
+                Console.WriteLine($"Flight ID : {selectedflightid.flightId}, Status changed to {selectedflightid.status}");
+            }
+            
+
+            //add hours to pilot
+            Pilot selectedpilotid = Context.Pilots.FirstOrDefault(item => item.pilotId == selectedflightid.pilotId);
+
+           
+
+            //check null
+            if(selectedpilotid == null)
+            {
+                Console.WriteLine("No pilot avialable");
+                return;
+            }
+            //selectedpilotid.flightHours += selectedflightid.flightDuration;
+
+            //confirm msg
+            Console.WriteLine( $"Flight {selectedflightid.flightCode} departed successfully.");
+        }
 
 
 
@@ -495,6 +542,7 @@ namespace Flight_Management_System
                     CancelBooking();
                     break;
                 case 8:
+                    DepartFlight();
                     break;
                 case 9:
                     break;
