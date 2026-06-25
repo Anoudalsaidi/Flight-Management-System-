@@ -479,6 +479,76 @@ namespace Flight_Management_System
         }
 
 
+        //-----------------------------
+        // case 9 >> Cancel a Flight
+        //-----------------------------
+        public static void CancelFlight()
+        {
+            Console.WriteLine("Flight Details :");
+            ViewAllFlights();
+
+            Console.WriteLine("Enter selected Flight ID :");
+            int flightid = int.Parse(Console.ReadLine());
+
+            //check input
+            Flight selectedflightid = Context.Flights.FirstOrDefault(f => f.flightId == flightid && f.status =="Scheduled ");
+
+            if(selectedflightid == null)
+            {
+                Console.WriteLine(" flight Not Available");
+                return;
+
+            }
+
+            selectedflightid.status = "cancelled";
+
+            //booking belong to that flight id
+            List<Booking> bookings = Context.Bookings.Where(b => b.flightId == selectedflightid.flightId && b.status== "Confirmed ").ToList();
+
+            if(bookings.Count == 0)
+            {
+                Console.WriteLine("No Booking belong this Flight");
+                return;
+            }
+
+            //view all booking in selected list
+            foreach(Booking book in bookings)
+            {
+                book.status = "cancelled";
+            }
+
+            //tel to passinger 
+            List<Booking> bookpassing = Context.Bookings.Where(p => p.passengerId == selectedflightid.flightId).ToList();
+
+            if(bookpassing == null)
+            {
+                Console.WriteLine("No booking in this flight");
+                return;
+            }
+
+            //view list booking with passinger
+            foreach(Booking b in bookpassing)
+            {
+                Console.WriteLine($" flight id:{selectedflightid.flightId} was cancelled ");
+            }
+
+            //tell to pilot
+          Pilot pilot = Context.Pilots.FirstOrDefault(p => p.pilotId == selectedflightid.pilotId);
+            
+            //check input
+            if(pilot == null)
+            {
+                Console.WriteLine("no pilot reisgtered to this flight");
+                return;
+            }
+            //change pilot satus
+            pilot.isAvailable = true;
+
+            // effect booking
+            int effectbooking = bookings.Count;
+            Console.WriteLine($"Flight cancelled successfully. Affected bookings:{effectbooking}");
+
+        }
 
 
 
@@ -545,6 +615,7 @@ namespace Flight_Management_System
                     DepartFlight();
                     break;
                 case 9:
+                    CancelFlight();
                     break;
                 case 10:
                     break;
