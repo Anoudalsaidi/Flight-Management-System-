@@ -1,5 +1,6 @@
 ﻿using Flight_Management_System.Models;
 using System.Net.WebSockets;
+using System.Numerics;
 using System.Timers;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -550,6 +551,61 @@ namespace Flight_Management_System
 
         }
 
+        //-----------------------------
+        // case 10 >> Passenger Booking History
+        //-----------------------------
+        public static void PassengerBookingHistory()
+        {
+            Console.WriteLine("---Booking History---");
+
+            //user input
+            Console.WriteLine("Enter Passinger ID: ");
+            int passid = int.Parse(Console.ReadLine());
+
+            //check input
+            Passenger checkpassid = Context.passengers.FirstOrDefault(p => p.passengerId == passid);
+
+            //check null
+            if (checkpassid == null)
+            {
+                Console.WriteLine(" NO Passinger MATECH");
+                return;
+            }
+
+            //view all booking for that passinger
+            List<Booking> bookingpassinger = Context.Bookings.Where(b => b.passengerId == passid).ToList();
+
+            //flight belong to booking
+            foreach (Booking book in bookingpassinger)
+            {
+                Flight flight = Context.Flights.FirstOrDefault(item => item.flightId == book.flightId);
+
+                Console.WriteLine("---Booking History---\n");
+                Console.WriteLine($"Flight Code :{flight.flightCode}" +
+                    $"\nOrigin : {flight.origin}" +
+                    $"\nDestination {flight.destination}" +
+                    $"\nDeparture Date :{flight.departureDate}" +
+                    $"\nSeat Number :{book.seatNumber}" +
+                    $"\nPrice Paid: {book.totalPrice}" +
+                    $"\nBooking Status : {book.status}");
+
+
+            }
+
+            decimal totalamout = Context.Bookings.Where(p => p.passengerId == passid && p.status == "confirmed").Sum((p => p.totalPrice));
+            Console.WriteLine($"\nTotal Amount Spent: {totalamout}");
+
+        }
+
+
+
+        //-----------------------------
+        // case 11 >> Flight Revenue & Load Factor Report
+        //-----------------------------
+        public static void FlightRevenueandLoadFactorReport()
+        {
+
+        }
 
 
 
@@ -562,8 +618,7 @@ namespace Flight_Management_System
 
 
 
-
-        static void Main(string[] args)
+            static void Main(string[] args)
         {
 
             bool exit = false;
@@ -618,8 +673,10 @@ namespace Flight_Management_System
                     CancelFlight();
                     break;
                 case 10:
+                    PassengerBookingHistory();
                     break;
                 case 11:
+                    PassengerBookingHistory();
                     break;
                 case 0:
                     exit = true;
