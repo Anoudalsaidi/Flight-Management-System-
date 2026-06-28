@@ -14,14 +14,16 @@ namespace Flight_Management_System
             Aircrafts = new List<Models.Aircraft>(),
             Bookings = new List<Models.Booking>(),
             Flights = new List<Models.Flight>(),
-            passengers=new List<Models.Passenger>(),
-            Pilots=new List<Models.Pilot>(),
+            passengers = new List<Models.Passenger>(),
+            Pilots = new List<Models.Pilot>(),
         };
         //-----------------------------
         // case 1 > Register Passenger
         //-----------------------------
         public static void RegisterPassenger()
         {
+            Console.WriteLine("\n Passenger Detials:");
+            Console.WriteLine("-----------------");
             Console.WriteLine(" Enter passenger Full Name:");
             string passengername = Console.ReadLine();
 
@@ -41,12 +43,12 @@ namespace Flight_Management_System
 
             Context.passengers.Add(new Passenger
             {
-                passengerId=passengerid,
-                passengerName=passengername,
-                passengerEmail=passengeremail,
-                passengerPhone=passengerphone,
-                passportNumber=passportnumber,
-                nationality=Nationality
+                passengerId = passengerid,
+                passengerName = passengername,
+                passengerEmail = passengeremail,
+                passengerPhone = passengerphone,
+                passportNumber = passportnumber,
+                nationality = Nationality
             });
 
             Console.WriteLine($"passenger has been Addedd successfuly with ID : {passengerid}");
@@ -61,16 +63,16 @@ namespace Flight_Management_System
             string AircraftModel = Console.ReadLine();
 
             Console.WriteLine("Enter total Seats:");
-            int TotalSeat =int.Parse( Console.ReadLine());
+            int TotalSeat = int.Parse(Console.ReadLine());
 
             int Aircraftid = Context.Aircrafts.Count + 1;
 
             Context.Aircrafts.Add(new Aircraft
             {
-                aircraftId=Aircraftid,
-                model=AircraftModel,
-                totalSeats=TotalSeat,
-                isOperational=true
+                aircraftId = Aircraftid,
+                model = AircraftModel,
+                totalSeats = TotalSeat,
+                isOperational = true
             });
 
             Console.WriteLine($"Aircraft Added sucessfuly with ID :{Aircraftid}");
@@ -92,18 +94,18 @@ namespace Flight_Management_System
             string licensenumber = Console.ReadLine();
 
             Console.WriteLine("Enter flight Hours: ");
-            int flightHour =int.Parse( Console.ReadLine());
+            int flightHour = int.Parse(Console.ReadLine());
 
             int pilotid = Context.Pilots.Count + 1;
 
             Context.Pilots.Add(new Pilot
             {
-                pilotId=pilotid,
-                pilotName=pilotaame,
-                pilotPhone=pilotphone,
-                licenseNumber=licensenumber,
-                flightHours= flightHour,
-                isAvailable=false
+                pilotId = pilotid,
+                pilotName = pilotaame,
+                pilotPhone = pilotphone,
+                licenseNumber = licensenumber,
+                flightHours = flightHour,
+                isAvailable = true
 
             });
             Console.WriteLine($"Pilot has been added with ID: {pilotid}");
@@ -206,13 +208,13 @@ namespace Flight_Management_System
             // Generate code
             int flightcode = Context.Flights.Count + 1;
             string code = "OA- " + flightcode;
-          
+
 
             //-----------------------------------------------
             // view all aircraft
             foreach (Aircraft aircraft in Context.Aircrafts)
             {
-                Console.WriteLine("#### Available Aircraft ####");
+                Console.WriteLine("\n#### Available Aircraft ####");
                 Console.WriteLine($"\n aircraft Id : {aircraft.aircraftId}" +
                     $"\n total Seats: {aircraft.totalSeats}" +
                     $"\n is Operational:{aircraft.isOperational}  ");
@@ -220,14 +222,14 @@ namespace Flight_Management_System
             }
 
             //select one
-            Console.WriteLine("choose Aircraft ID: ");
+            Console.WriteLine("\n choose Aircraft ID: ");
             int Aircraftid = int.Parse(Console.ReadLine());
 
             //check user input
-            Aircraft selectedAircraftid = Context.Aircrafts.FirstOrDefault(item => item.aircraftId == Aircraftid && item.isOperational==true);
+            Aircraft selectedAircraftid = Context.Aircrafts.FirstOrDefault(item => item.aircraftId == Aircraftid && item.isOperational == true);
 
             //check not null
-            if(selectedAircraftid == null)
+            if (selectedAircraftid == null)
             {
                 Console.WriteLine(" This Aircraft Not Available ");
                 return;
@@ -235,7 +237,7 @@ namespace Flight_Management_System
 
             //------------------------------------------------------
             //View assign a pilot
-            foreach(Pilot p in Context.Pilots)
+            foreach (Pilot p in Context.Pilots)
             {
                 Console.WriteLine("#### Available Pilot ####");
                 Console.WriteLine($"\n pilot Id :{p.pilotId}" +
@@ -249,9 +251,9 @@ namespace Flight_Management_System
 
             //check input
             Pilot selectedpilotId = Context.Pilots.FirstOrDefault(item => item.pilotId == pilotid && item.isAvailable == true);
-            
+
             //check id not null
-            if(selectedpilotId == null)
+            if (selectedpilotId == null)
             {
                 Console.WriteLine("Not pilot match with seleceted ID");
                 return;
@@ -284,16 +286,16 @@ namespace Flight_Management_System
             //assign a pilot
             Context.Flights.Add(new Flight
             {
-                flightId= flightid,
-                flightCode =code,
-               aircraftId= selectedAircraftid.aircraftId,
+                flightId = flightid,
+                flightCode = code,
+                aircraftId = selectedAircraftid.aircraftId,
                 pilotId = selectedpilotId.pilotId,
                 origin = flightOrigin,
-                destination= flightdestination,
-                departureDate= departuredate,
-                departureTime=departuretime,
-                ticketPrice=ticketprice,
-                flightDuration=duration,
+                destination = flightdestination,
+                departureDate = departuredate,
+                departureTime = departuretime,
+                ticketPrice = ticketprice,
+                flightDuration = duration,
                 availableSeats = selectedAircraftid.totalSeats,
                 status = "Scheduled "
 
@@ -302,11 +304,11 @@ namespace Flight_Management_System
 
             // confirm msg
             Console.WriteLine($"Flight scheduled successfully .. With ID : {flightid}");
-           
+
             // make pilot unavailable
             selectedpilotId.isAvailable = false;
             ViewAllFlights();
-          
+
         }
 
 
@@ -320,27 +322,27 @@ namespace Flight_Management_System
             int passengerid = int.Parse(Console.ReadLine());
 
             //check input
-           Passenger checkid = Context.passengers.FirstOrDefault(p => p.passengerId == passengerid);
+            Passenger checkid = Context.passengers.FirstOrDefault(p => p.passengerId == passengerid);
 
-         //check null
-         if(checkid == null)
+            //check null
+            if (checkid == null)
             {
                 Console.WriteLine("Invlid passenger ID");
                 return;
             }
 
             // view DESTINATION
-             ViewAllFlights();
-            
+            ViewAllFlights();
+
 
             //select destination
             Console.WriteLine("Enter YOUR Destination ");
             string destination = Console.ReadLine();
 
             //check input
-            List<Flight> selectdestination = Context.Flights.Where(f => f.destination == destination && f.status == "Scheduled" && f.availableSeats >0).ToList();
+            List<Flight> selectdestination = Context.Flights.Where(f => f.destination == destination && f.status == "Scheduled" && f.availableSeats > 0).ToList();
 
-            if(selectdestination.Count == 0)
+            if (selectdestination.Count == 0)
             {
                 Console.WriteLine("Your Destination not available");
                 return;
@@ -365,7 +367,7 @@ namespace Flight_Management_System
             Flight selectflightid = Context.Flights.FirstOrDefault(f => f.flightId == flightid && f.availableSeats > 0);
 
             //check null
-            if(selectflightid == null)
+            if (selectflightid == null)
             {
                 Console.WriteLine("No Flight");
                 return;
@@ -386,16 +388,16 @@ namespace Flight_Management_System
             //pick flight
             Context.Bookings.Add(new Booking
             {
-                bookingId=bookingid,
-                passengerId=passengerid,
-                flightId=flightid,
-                seatNumber=seatnumber,
-                bookingDate=bookdate,
-                totalPrice= selectflightid.ticketPrice,
-                status= "Confirmed"
+                bookingId = bookingid,
+                passengerId = passengerid,
+                flightId = flightid,
+                seatNumber = seatnumber,
+                bookingDate = bookdate,
+                totalPrice = selectflightid.ticketPrice,
+                status = "Confirmed"
 
             });
-            selectflightid.availableSeats --;
+            selectflightid.availableSeats--;
 
             Console.WriteLine($"Booking Added successfully with ID:{bookingid}");
         }
@@ -413,7 +415,7 @@ namespace Flight_Management_System
             Booking cancelbooking = Context.Bookings.FirstOrDefault(item => item.bookingId == bookingid);
 
             //check null
-            if(cancelbooking == null)
+            if (cancelbooking == null)
             {
                 Console.WriteLine("No Booking available");
                 return;
@@ -422,7 +424,7 @@ namespace Flight_Management_System
             Flight returnflight = Context.Flights.FirstOrDefault(item => item.flightId == cancelbooking.flightId);
             returnflight.availableSeats++;
 
-            cancelbooking.status= "Cancelled";
+            cancelbooking.status = "Cancelled";
 
             Console.WriteLine($"Booking ID: {cancelbooking.bookingId} has been cancelled successfully");
 
@@ -440,35 +442,35 @@ namespace Flight_Management_System
 
             //check flight id
             Flight selectedflightid = Context.Flights.FirstOrDefault(item => item.flightId == flightid);
-            
+
             //check null
-            if(selectedflightid == null)
+            if (selectedflightid == null)
             {
                 Console.WriteLine("No flight avialable");
                 return;
             }
-            
+
             //check & change satus
-            if(selectedflightid.status == "Scheduled")
+            if (selectedflightid.status == "Scheduled")
             {
                 selectedflightid.status = "Departed";
                 Console.WriteLine($"Flight ID :{selectedflightid.aircraftId} , status has been change to {selectedflightid.status}");
             }
 
             //check if flight status (Departed ) not allowed to cancel
-            if(selectedflightid.status == "Departed")
+            if (selectedflightid.status == "Departed")
             {
                 Console.WriteLine($"Flight ID : {selectedflightid.flightId}, Status changed to {selectedflightid.status}");
             }
-            
+
 
             //add hours to pilot
             Pilot selectedpilotid = Context.Pilots.FirstOrDefault(item => item.pilotId == selectedflightid.pilotId);
 
-           
+
 
             //check null
-            if(selectedpilotid == null)
+            if (selectedpilotid == null)
             {
                 Console.WriteLine("No pilot avialable");
                 return;
@@ -476,7 +478,7 @@ namespace Flight_Management_System
             //selectedpilotid.flightHours += selectedflightid.flightDuration;
 
             //confirm msg
-            Console.WriteLine( $"Flight {selectedflightid.flightCode} departed successfully.");
+            Console.WriteLine($"Flight {selectedflightid.flightCode} departed successfully.");
         }
 
 
@@ -492,9 +494,9 @@ namespace Flight_Management_System
             int flightid = int.Parse(Console.ReadLine());
 
             //check input
-            Flight selectedflightid = Context.Flights.FirstOrDefault(f => f.flightId == flightid && f.status =="Scheduled ");
+            Flight selectedflightid = Context.Flights.FirstOrDefault(f => f.flightId == flightid && f.status == "Scheduled ");
 
-            if(selectedflightid == null)
+            if (selectedflightid == null)
             {
                 Console.WriteLine(" flight Not Available");
                 return;
@@ -504,16 +506,16 @@ namespace Flight_Management_System
             selectedflightid.status = "cancelled";
 
             //booking belong to that flight id
-            List<Booking> bookings = Context.Bookings.Where(b => b.flightId == selectedflightid.flightId && b.status== "Confirmed ").ToList();
+            List<Booking> bookings = Context.Bookings.Where(b => b.flightId == selectedflightid.flightId && b.status == "Confirmed ").ToList();
 
-            if(bookings.Count == 0)
+            if (bookings.Count == 0)
             {
                 Console.WriteLine("No Booking belong this Flight");
                 return;
             }
 
             //view all booking in selected list
-            foreach(Booking book in bookings)
+            foreach (Booking book in bookings)
             {
                 book.status = "cancelled";
             }
@@ -521,23 +523,23 @@ namespace Flight_Management_System
             //tel to passinger 
             List<Booking> bookpassing = Context.Bookings.Where(p => p.passengerId == selectedflightid.flightId).ToList();
 
-            if(bookpassing == null)
+            if (bookpassing == null)
             {
                 Console.WriteLine("No booking in this flight");
                 return;
             }
 
             //view list booking with passinger
-            foreach(Booking b in bookpassing)
+            foreach (Booking b in bookpassing)
             {
                 Console.WriteLine($" flight id:{selectedflightid.flightId} was cancelled ");
             }
 
             //tell to pilot
-          Pilot pilot = Context.Pilots.FirstOrDefault(p => p.pilotId == selectedflightid.pilotId);
-            
+            Pilot pilot = Context.Pilots.FirstOrDefault(p => p.pilotId == selectedflightid.pilotId);
+
             //check input
-            if(pilot == null)
+            if (pilot == null)
             {
                 Console.WriteLine("no pilot reisgtered to this flight");
                 return;
@@ -618,7 +620,7 @@ namespace Flight_Management_System
 
 
 
-            static void Main(string[] args)
+        static void Main(string[] args)
         {
 
             bool exit = false;
@@ -628,7 +630,8 @@ namespace Flight_Management_System
                 Console.WriteLine("Welcome To Flight Management System ");
                 Console.WriteLine("^^^^^^^-------------------^^^^^^^^");
                 Console.WriteLine("\nselect an Option:");
-                Console.WriteLine("1- Register a Passenger ");
+                Console.WriteLine("############################################");
+                Console.WriteLine("1- Register a Passenger  ");
                 Console.WriteLine("2- Add an Aircraft ");
                 Console.WriteLine("3- Register a Pilot ");
                 Console.WriteLine("4- Schedule a Flight ");
@@ -640,56 +643,59 @@ namespace Flight_Management_System
                 Console.WriteLine("10- Passenger Booking History ");
                 Console.WriteLine("11- Flight Revenue & Load Factor Report ");
                 Console.WriteLine("0- Exsit ");
-            }
+                Console.WriteLine("###########################################");
 
-            int option = int.Parse(Console.ReadLine());
-            switch (option)
-            {
-                case 1:
-                    RegisterPassenger();
-                    break;
-                case 2:
-                    AddAircraft();
-                    break;
-                case 3:
-                    RegisterPilot();
-                    break;
-                case 4:
-                    SchedulenewFlight();
-                    break;
-                case 5:
-                    ViewAllFlights();
-                    break;
-                case 6:
-                    BookFlight();
-                    break;
-                case 7:
-                    CancelBooking();
-                    break;
-                case 8:
-                    DepartFlight();
-                    break;
-                case 9:
-                    CancelFlight();
-                    break;
-                case 10:
-                    PassengerBookingHistory();
-                    break;
-                case 11:
-                    PassengerBookingHistory();
-                    break;
-                case 0:
-                    exit = true;
-                    break;
-                default:
-                    Console.WriteLine("\n Invalid Input, Try Again");
-                    break;
-            }
-            if (!exit)
-            {
-                Console.WriteLine("\n Press any key to continue ..");
-                Console.ReadKey();
-                Console.Clear();
+
+                int option = int.Parse(Console.ReadLine());
+                switch (option)
+                {
+                    case 1:
+                        RegisterPassenger();
+                        break;
+                    case 2:
+                        AddAircraft();
+                        break;
+                    case 3:
+                        RegisterPilot();
+                        break;
+                    case 4:
+                        SchedulenewFlight();
+                        break;
+                    case 5:
+                        ViewAllFlights();
+                        break;
+                    case 6:
+                        BookFlight();
+                        break;
+                    case 7:
+                        CancelBooking();
+                        break;
+                    case 8:
+                        DepartFlight();
+                        break;
+                    case 9:
+                        CancelFlight();
+                        break;
+                    case 10:
+                        PassengerBookingHistory();
+                        break;
+                    case 11:
+                        PassengerBookingHistory();
+                        break;
+                    case 0:
+                        exit = true;
+                        break;
+                    default:
+                        Console.WriteLine("\n Invalid Input, Try Again");
+                        break;
+                }
+
+                if (!exit)
+                {
+                    Console.WriteLine("\n Press any key to continue ..");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
             }
         }
     }
